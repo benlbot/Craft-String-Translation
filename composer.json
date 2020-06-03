@@ -1,0 +1,41 @@
+{
+    "name": "benlbot/string-translation",
+    "description": "Translate your translation strings into different languages.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "string translation"
+    ],
+    "support": {
+        "docs": "https://github.com/benlbot/string-translation/blob/master/README.md",
+        "issues": "https://github.com/benlbot/string-translation/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjamin Le Bot",
+            "homepage": "https://github.com/benlbot"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "benlbot\\stringtranslation\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "String Translation",
+        "handle": "string-translation",
+        "developer": "Benjamin Le Bot",
+        "developerUrl": "https://github.com/benlbot",
+        "documentationUrl": "https://github.com/benlbot/string-translation/blob/master/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/benlbot/string-translation/master/CHANGELOG.md",
+        "class": "benlbot\\stringtranslation\\StringTranslation"
+    }
+}
