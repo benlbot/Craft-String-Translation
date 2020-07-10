@@ -9,3 +9,116 @@
 .string-translation-list {
   list-style: disc;
 }
+
+.striped > tbody > :nth-child(odd) {
+	background-color: #f9f9f9;
+}
+
+table.fixed {
+	table-layout: fixed;
+}
+
+/* .widefat - main style for tables */
+.widefat {
+	border-spacing: 0;
+	width: 100%;
+	clear: both;
+	margin: 0;
+}
+
+.widefat * {
+	word-wrap: break-word;
+}
+
+.widefat a,
+.widefat button.button-link {
+	text-decoration: none;
+}
+
+.widefat td,
+.widefat th {
+	padding: 8px 10px;
+}
+
+.widefat thead th,
+.widefat thead td {
+	border-bottom: 1px solid #ccd0d4;
+}
+
+.widefat tfoot th,
+.widefat tfoot td {
+	border-top: 1px solid #ccd0d4;
+	border-bottom: none;
+}
+
+.widefat .no-items td {
+	border-bottom-width: 0;
+}
+
+.widefat td {
+	vertical-align: top;
+}
+
+.widefat td,
+.widefat td p,
+.widefat td ol,
+.widefat td ul {
+	font-size: 13px;
+	line-height: 1.5em;
+}
+
+.widefat th,
+.widefat thead td,
+.widefat tfoot td {
+	text-align: left;
+	line-height: 1.3em;
+	font-size: 14px;
+}
+
+.widefat th input,
+.updates-table td input,
+.widefat thead td input,
+.widefat tfoot td input {
+	margin: 0 0 0 8px;
+	padding: 0;
+	vertical-align: text-top;
+}
+
+.widefat .check-column {
+	width: 2.2em;
+	padding: 6px 0 25px;
+	vertical-align: top;
+}
+
+.widefat tbody th.check-column {
+	padding: 9px 0 22px;
+}
+
+.widefat thead td.check-column,
+.widefat tbody th.check-column,
+.updates-table tbody td.check-column,
+.widefat tfoot td.check-column {
+	padding: 11px 0 0 3px;
+}
+
+.widefat thead td.check-column,
+.widefat tfoot td.check-column {
+	padding-top: 4px;
+	vertical-align: middle;
+}
+
+/* strings translation table */
+.stringstranslations .column-string {
+	width: 33%;
+}
+
+.translation label {
+	display: inline-block;
+	width: 23%;
+	vertical-align: top;
+}
+
+.translation input,
+.translation textarea {
+	width: 72%;
+}

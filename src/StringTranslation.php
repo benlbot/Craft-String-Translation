@@ -54,7 +54,7 @@ class StringTranslation extends Plugin {
                 if ($event->plugin === $this) {
                     $request = Craft::$app->getRequest();
                     if ($request->isCpRequest) {
-                        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('string-translation/dashboard'))->send();
+                        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('string-translation'))->send();
                     }
                 }
             }
@@ -66,7 +66,7 @@ class StringTranslation extends Plugin {
         if ($request->getIsCpRequest() && !$request->getIsConsoleRequest()) {
             // Register CP routes
             Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(RegisterUrlRulesEvent $event) {
-              $event->rules = array_merge($event->rules, $this->getCpUrlRules());
+                $event->rules = array_merge($event->rules, $this->getCpUrlRules());
             });
         }
 
@@ -85,8 +85,7 @@ class StringTranslation extends Plugin {
      */
     private function getCpUrlRules() {
       return [
-        'string-translation' => 'string-translation/default/index',
-        'string-translation/dashboard' => 'string-translation/default/dashboard',
+        'string-translation' => 'string-translation/default/index'
       ];
     }
 

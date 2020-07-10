@@ -24,23 +24,37 @@ class StringTranslation extends Component {
      *
      * @return array
      */
-    public function getTranslations($filter = "", $language = "en", $locale = "") {
+    public function getTranslations($filter = "") {
         $translationsPath = Craft::getAlias('@translations');
 
         if ($translationsPath === false) {
             throw new Exception('There was a problem getting the translations path.');
         }
 
-        $translationFile = "site.php";
-        $translationLangPath = $language.(!empty($locale) ? "_".strtoupper($locale) : "");
-        $translationFilePath = $translationsPath.DIRECTORY_SEPARATOR.$translationLangPath.DIRECTORY_SEPARATOR.$translationFile;
+        $translationFileRegex = $translationsPath.DIRECTORY_SEPARATOR."*";
+        $translationFilesPath = glob($translationFileRegex);
 
-        $translations = $this->loadMessagesFromFile($translationFilePath);
+        foreach ($translationFilesPath as $filePath) {
+            $split=explode('/', $filePath);
+            $fileContent = $this->loadMessagesFromFile($filePath.DIRECTORY_SEPARATOR."site.php");
 
-        if ( !empty($filter) ){
-            foreach ($translations as $key => $value) {
-                if ( strpos($value, $filter) == FALSE ){
-                    unset($translations[$key]);
+            if(empty($translations)) {
+                $translations = array_map(function($e) use ($split) {
+                    return array($split[sizeof($split)-1] => $e);
+                }, $fileContent);
+            } else {
+                foreach ($fileContent as $key => $value) {
+                    if ( !empty($translations[$key]) ) {
+                        $translations[$key][$split[sizeof($split)-1]] = $value;
+                    }
+                }
+            }
+
+            if ( !empty($filter) ){
+                foreach ($translations as $key => $value) {
+                    if ( strpos($value, $filter) == FALSE ){
+                        unset($translations[$key]);
+                    }
                 }
             }
         }
@@ -54,17 +68,14 @@ class StringTranslation extends Component {
      * @param string $messageFile path to message file
      * @return array|null array of messages or null if file not found
      */
-    protected function loadMessagesFromFile($messageFile)
-    {
+    protected function loadMessagesFromFile($messageFile) {
         if (is_file($messageFile)) {
             $messages = include $messageFile;
             if (!is_array($messages)) {
                 $messages = [];
             }
-
             return $messages;
         }
-
         return null;
     }
 

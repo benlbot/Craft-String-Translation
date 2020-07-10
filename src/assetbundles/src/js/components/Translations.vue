@@ -2,14 +2,13 @@
   <div>
     <translations-filter
       @filter-translations="filterTranslations"
-      @clear-filters="clearFilters"
     >
     </translations-filter>
 
     <translations-table
       :translations="translations"
       :loading-translations="loadingTranslations"
-      @translation-deleted="onTranslationDelete()"
+      @translation-updated="onTranslationUpdate()"
     >
     </translations-table>
   </div>
@@ -52,7 +51,7 @@ export default {
       });
     },
 
-    onTranslationDelete () {
+    onTranslationUpdate () {
       this.loadTranslations();
     },
 
@@ -60,12 +59,7 @@ export default {
       if ( filter !== "" ) {
         this.loadTranslations(filter);
       }
-    },
-
-    clearFilters () {
-      this.loadTranslations();
-    },
-
+    }
   }
 }
 </script>

@@ -13,8 +13,7 @@
       </div>
 
       <div>
-        <button class="btn submit">Filter</button>
-        <button class="btn" @click.prevent="clearFilters()">Clear filters</button>
+        <button class="btn submit">Search Translations</button>
       </div>
     </form>
   </div>
@@ -30,28 +29,18 @@ export default {
   },
 
   mounted () {
-    this.resetFiltersObject();
+    this.filter = "";
   },
 
   methods: {
     filterTranslations () {
-      if ( !this.isEmptyObject(this.filter)  )
-      {
+      if ( !this.isEmptyObject(this.filter)  ) {
         this.filterActive = true;
         this.$emit('filter-translation', this.filter);
       } else {
-        this.resetFiltersObject();
+        this.filter = "";
         this.filterActive = false;
-        this.$emit('clear-filters');
-      }
-    },
-
-    clearFilters () {
-      if ( !this.isEmptyObject(this.filter) || this.filterActive )
-      {
-        this.resetFiltersObject();
-        this.filterActive = false;
-        this.$emit('clear-filters');
+        this.$emit('filter-translation', this.filter);
       }
     },
 
@@ -61,11 +50,6 @@ export default {
       });
     },
 
-    resetFiltersObject () {
-      this.filter = "";
-    },
-
   },
 }
 </script>
-
