@@ -72,7 +72,24 @@ class DefaultController extends Controller {
      * @return Response
      */
     public function actionGetTranslations($translation = "") : Response {
-        return $this->asJson(StringTranslationPlugin::$plugin->StringTranslation->getTranslations($translation/*, $language, $locale*/));
+        return $this->asJson(StringTranslationPlugin::$plugin->StringTranslation->getTranslations($translation));
+    }
+
+    /**
+     * Update all translations
+     *
+     * @param string $translation
+     *
+     * @return Response
+     */
+    public function actionUpdateTranslations() : Response {
+        $this->requirePostRequest();
+
+        $request = Craft::$app->getRequest();
+
+        $translations = json_decode($request->getRawBody());
+
+        return $this->asJson(StringTranslationPlugin::$plugin->StringTranslation->updateTranslations($translations));
     }
 
     /**

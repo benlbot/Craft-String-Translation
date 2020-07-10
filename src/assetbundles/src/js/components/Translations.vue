@@ -56,6 +56,7 @@ export default {
     },
 
     filterTranslations (filter) {
+      console.log("filterTranslations :" + filter);
       if ( filter !== "" ) {
         this.loadTranslations(filter);
       }

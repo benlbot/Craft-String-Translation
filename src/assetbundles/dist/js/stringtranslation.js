@@ -1753,6 +1753,8 @@ __webpack_require__.r(__webpack_exports__);
       this.loadTranslations();
     },
     filterTranslations: function filterTranslations(filter) {
+      console.log("filterTranslations :" + filter);
+
       if (filter !== "") {
         this.loadTranslations(filter);
       }
@@ -1871,6 +1873,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+ //:value="`${langValue}`"
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -1878,9 +1881,10 @@ __webpack_require__.r(__webpack_exports__);
     loadingTranslations: Boolean
   },
   methods: {
-    confirmUpdate: function confirmUpdate() {
+    confirmUpdate: function confirmUpdate(e) {
       var _this = this;
 
+      e.preventDefault();
       this.$swal({
         title: 'Are you sure?',
         html: "All fields will be updated. You won't be able to revert this!",
@@ -1891,25 +1895,21 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, Update!'
       }).then(function (result) {
         if (result.value) {
-          _this.updateTranslation();
+          _this.updateTranslation(e);
         }
       });
     },
-    updateTranslation: function updateTranslation() {
-      var _this2 = this;
-
+    updateTranslation: function updateTranslation(e) {
       var headers = {
         'X-CSRF-Token': Craft.csrfTokenValue
       };
-      var data = 'fieldId=' + fieldId;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(Craft.getActionUrl('string-translation/default/update'), data, {
+      var data = JSON.stringify(this.translations);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/actions/string-translation/default/update-translations', data, {
         'headers': headers
       }).then(function (response) {
-        Craft.cp.displayNotice("Field deleted");
-
-        _this2.$emit('field-deleted');
+        Craft.cp.displayNotice("Translations updated");
       })["catch"](function (error) {
-        Craft.cp.displayError("Failed to delete the field");
+        Craft.cp.displayError("Failed to update translations");
       });
     }
   }
@@ -3224,12 +3224,8 @@ var render = function() {
       "form",
       {
         staticClass: "flex justify-end",
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.confirmUpdate()
-          }
-        }
+        attrs: { id: "st_form" },
+        on: { submit: _vm.confirmUpdate }
       },
       [
         _vm.translations.length
@@ -3259,17 +3255,39 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.translations[index][1][lang],
+                                  expression: "translations[index][1][lang]"
+                                }
+                              ],
                               attrs: {
                                 type: "text",
                                 name:
-                                  "translation[" +
+                                  "translations[" +
                                   translation +
                                   "][" +
                                   lang +
                                   "]",
                                 id: lang + "-" + translation
                               },
-                              domProps: { value: "" + langValue }
+                              domProps: {
+                                value: _vm.translations[index][1][lang]
+                              },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.translations[index][1],
+                                    lang,
+                                    $event.target.value
+                                  )
+                                }
+                              }
                             })
                           ]
                         )

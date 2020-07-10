@@ -17,7 +17,7 @@ use yii\base\Exception;
 class StringTranslation extends Component {
 
     /**
-     * Get all Translations for specific lang and locale
+     * Get all Translations
      *
      * @param string $language
      * @param string $locale
@@ -77,6 +77,53 @@ class StringTranslation extends Component {
             return $messages;
         }
         return null;
+    }
+
+    /**
+     * Update all Translations
+     *
+     * @param string $language
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function updateTranslations($translations = array()) {
+        $translationsPath = Craft::getAlias('@translations');
+
+        if ($translationsPath === false) {
+            throw new Exception('There was a problem getting the translations path.');
+        }
+
+        $done = false;
+
+        foreach ($translations as $key => $translationValues) {
+            $firstLine = $key == 0;
+            $lastLine = $key == sizeof($translations) - 1;
+            foreach ($translationValues[1] as $lang => $value) {
+                $translationFilePath = $translationsPath.DIRECTORY_SEPARATOR.$lang.DIRECTORY_SEPARATOR."site.php";
+
+                if (is_file($translationFilePath) && !empty($translations)) {
+                    if ( $firstLine ){
+                        $startInsert = file_put_contents($translationFilePath, "<?php ".PHP_EOL.PHP_EOL."return [".PHP_EOL, LOCK_EX);
+                    } else {
+                        $startInsert = true;
+                    }
+                    $contentInsert = file_put_contents($translationFilePath, "\t\"".$translationValues[0].'" => "'.$value.'",'.PHP_EOL, FILE_APPEND | LOCK_EX);
+                    if ( $lastLine) {
+                        $endInsert = file_put_contents($translationFilePath, "];".PHP_EOL, FILE_APPEND |  LOCK_EX);
+                    } else {
+                        $endInsert = true;
+                    }
+                    $done = $startInsert && $contentInsert && $endInsert;
+
+                    if(!$done){
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
 }

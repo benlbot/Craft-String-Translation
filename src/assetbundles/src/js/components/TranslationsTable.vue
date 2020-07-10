@@ -4,7 +4,7 @@
       <div class="spinner big"></div>
     </div>
 
-    <form class="flex justify-end" @submit.prevent="confirmUpdate()">
+    <form class="flex justify-end" id="st_form" @submit="confirmUpdate">
 
       <table class="data fullwidth widefat striped" v-if="translations.length">
         <thead>
@@ -19,7 +19,7 @@
             <td class="column-translations">
               <div class="translation" v-for="(langValue, lang) in translation[1]" :key="lang">
                 <label :for="`${lang}-${translation}`">{{lang}}</label>
-                <input type="text" :name="`translation[${translation}][${lang}]`" :id="`${lang}-${translation}`" :value="`${langValue}`"></input>
+                <input type="text" :name="`translations[${translation}][${lang}]`" v-model="translations[index][1][lang]" :id="`${lang}-${translation}`"></input>
               </div>
             </td>
           </tr>
@@ -37,7 +37,7 @@
 
 <script>
 import axios from 'axios';
-
+//:value="`${langValue}`"
 export default {
 
   props: {
@@ -46,7 +46,8 @@ export default {
   },
 
   methods: {
-    confirmUpdate () {
+    confirmUpdate (e) {
+      e.preventDefault();
       this.$swal({
         title: 'Are you sure?',
         html: "All fields will be updated. You won't be able to revert this!",
@@ -57,25 +58,24 @@ export default {
         confirmButtonText: 'Yes, Update!'
       }).then((result) => {
         if (result.value) {
-          this.updateTranslation();
+          this.updateTranslation(e);
         }
       });
     },
 
-    updateTranslation () {
+    updateTranslation (e) {
       let headers = {
         'X-CSRF-Token': Craft.csrfTokenValue,
       };
 
-      let data = 'fieldId=' + fieldId;
+      let data = JSON.stringify(this.translations);
 
-      axios.post(Craft.getActionUrl('string-translation/default/update'), data, {'headers': headers})
+      axios.post('/actions/string-translation/default/update-translations', data, {'headers': headers})
       .then((response) => {
-        Craft.cp.displayNotice("Field deleted");
-        this.$emit('field-deleted');
+        Craft.cp.displayNotice("Translations updated");
       })
       .catch((error) => {
-        Craft.cp.displayError("Failed to delete the field");
+        Craft.cp.displayError("Failed to update translations");
       });
     },
 
