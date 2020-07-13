@@ -18,8 +18,8 @@
             <td class="font-bold column-string">{{ translation[0] }}</td>
             <td class="column-translations">
               <div class="translation" v-for="(langValue, lang) in translation[1]" :key="lang">
-                <label :for="`${lang}-${translation}`">{{lang}}</label>
-                <input type="text" :name="`translations[${translation}][${lang}]`" v-model="translations[index][1][lang]" :id="`${lang}-${translation}`"></input>
+                <label :for="`${lang}-${translation[0]}`">{{lang}}</label>
+                <input type="text" v-model="translations[index][1][lang]" :id="`${lang}-${translation[0]}`"></input>
               </div>
             </td>
           </tr>

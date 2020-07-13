@@ -3250,7 +3250,7 @@ var render = function() {
                           [
                             _c(
                               "label",
-                              { attrs: { for: lang + "-" + translation } },
+                              { attrs: { for: lang + "-" + translation[0] } },
                               [_vm._v(_vm._s(lang))]
                             ),
                             _vm._v(" "),
@@ -3265,13 +3265,7 @@ var render = function() {
                               ],
                               attrs: {
                                 type: "text",
-                                name:
-                                  "translations[" +
-                                  translation +
-                                  "][" +
-                                  lang +
-                                  "]",
-                                id: lang + "-" + translation
+                                id: lang + "-" + translation[0]
                               },
                               domProps: {
                                 value: _vm.translations[index][1][lang]
