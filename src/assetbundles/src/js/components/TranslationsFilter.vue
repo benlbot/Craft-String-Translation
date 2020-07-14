@@ -1,6 +1,6 @@
 <template>
   <div class="mb-6">
-    <form class="flex justify-end" @submit.prevent="filterTranslations()">
+    <form class="flex justify-end" @submit.prevent="filterTranslations">
       <div>
         <span class="status" :class="{'on': filterActive}" title="Filter status"></span>
       </div>
@@ -8,7 +8,7 @@
       <div>
         <label class="hidden">Translation</label>
         <div>
-          <input class="text" type="text" name="translation" placeholder="Search by Translation" v-model="filter" />
+          <input class="text" type="text" name="translation" placeholder="Search by Translation" v-model="filter">
         </div>
       </div>
 
@@ -36,11 +36,11 @@ export default {
     filterTranslations () {
       if ( !this.isEmptyObject(this.filter)  ) {
         this.filterActive = true;
-        this.$emit('filter-translation', this.filter);
+        this.$emit('filter-translations', this.filter);
       } else {
         this.filter = "";
         this.filterActive = false;
-        this.$emit('filter-translation', this.filter);
+        this.$emit('filter-translations', this.filter);
       }
     },
 

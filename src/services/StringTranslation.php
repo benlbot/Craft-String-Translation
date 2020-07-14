@@ -50,9 +50,11 @@ class StringTranslation extends Component {
                 }
             }
 
+            // Try to filter during the load of the ^^^^^^^^^^
+
             if ( !empty($filter) ){
                 foreach ($translations as $key => $value) {
-                    if ( strpos($value, $filter) == FALSE ){
+                    if ( strpos(strtolower($key), strtolower($filter)) == FALSE ){
                         unset($translations[$key]);
                     }
                 }
@@ -108,7 +110,7 @@ class StringTranslation extends Component {
                     } else {
                         $startInsert = true;
                     }
-                    $contentInsert = file_put_contents($translationFilePath, "\t\"".$translationValues[0].'" => "'.$value.'",'.PHP_EOL, FILE_APPEND | LOCK_EX);
+                    $contentInsert = file_put_contents($translationFilePath, "    \"".$translationValues[0].'" => "'.$value.'",'.PHP_EOL, FILE_APPEND | LOCK_EX);
                     if ( $lastLine) {
                         $endInsert = file_put_contents($translationFilePath, "];".PHP_EOL, FILE_APPEND |  LOCK_EX);
                     } else {

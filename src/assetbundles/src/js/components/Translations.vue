@@ -8,7 +8,6 @@
     <translations-table
       :translations="translations"
       :loading-translations="loadingTranslations"
-      @translation-updated="onTranslationUpdate()"
     >
     </translations-table>
   </div>
@@ -28,7 +27,7 @@ export default {
   data() {
     return {
       translations: [],
-
+      lastFilter: "",
       loadingTranslations: true,
     };
   },
@@ -40,7 +39,7 @@ export default {
   methods: {
     loadTranslations (param) {
       this.translations = [];
-      axios.get('/actions/string-translation/default/get-translations', {translation : param})
+      axios.get('/actions/string-translation/default/get-translations', {params : { translation : param} })
       .then((response) => {
         this.translations = Object.entries(response.data);
         this.loadingTranslations = false;
@@ -51,16 +50,13 @@ export default {
       });
     },
 
-    onTranslationUpdate () {
-      this.loadTranslations();
-    },
-
     filterTranslations (filter) {
-      console.log("filterTranslations :" + filter);
-      if ( filter !== "" ) {
+      if ( this.lastFilter != filter ) {
+        this.lastFilter = filter;
+        this.loadingTranslations = true;
         this.loadTranslations(filter);
       }
-    }
+    },
   }
 }
 </script>

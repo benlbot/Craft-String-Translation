@@ -1716,7 +1716,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -1728,6 +1727,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       translations: [],
+      lastFilter: "",
       loadingTranslations: true
     };
   },
@@ -1740,7 +1740,9 @@ __webpack_require__.r(__webpack_exports__);
 
       this.translations = [];
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/actions/string-translation/default/get-translations', {
-        translation: param
+        params: {
+          translation: param
+        }
       }).then(function (response) {
         _this.translations = Object.entries(response.data);
         _this.loadingTranslations = false;
@@ -1749,13 +1751,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.loadingTranslations = false;
       });
     },
-    onTranslationUpdate: function onTranslationUpdate() {
-      this.loadTranslations();
-    },
     filterTranslations: function filterTranslations(filter) {
-      console.log("filterTranslations :" + filter);
-
-      if (filter !== "") {
+      if (this.lastFilter != filter) {
+        this.lastFilter = filter;
+        this.loadingTranslations = true;
         this.loadTranslations(filter);
       }
     }
@@ -1808,11 +1807,11 @@ __webpack_require__.r(__webpack_exports__);
     filterTranslations: function filterTranslations() {
       if (!this.isEmptyObject(this.filter)) {
         this.filterActive = true;
-        this.$emit('filter-translation', this.filter);
+        this.$emit('filter-translations', this.filter);
       } else {
         this.filter = "";
         this.filterActive = false;
-        this.$emit('filter-translation', this.filter);
+        this.$emit('filter-translations', this.filter);
       }
     },
     isEmptyObject: function isEmptyObject(object) {
@@ -1873,7 +1872,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
- //:value="`${langValue}`"
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -3089,11 +3087,6 @@ var render = function() {
         attrs: {
           translations: _vm.translations,
           "loading-translations": _vm.loadingTranslations
-        },
-        on: {
-          "translation-updated": function($event) {
-            return _vm.onTranslationUpdate()
-          }
         }
       })
     ],
@@ -3130,7 +3123,7 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            return _vm.filterTranslations()
+            return _vm.filterTranslations($event)
           }
         }
       },
@@ -3220,84 +3213,90 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "flex justify-end",
-        attrs: { id: "st_form" },
-        on: { submit: _vm.confirmUpdate }
-      },
-      [
-        _vm.translations.length
-          ? _c("table", { staticClass: "data fullwidth widefat striped" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.translations, function(translation, index) {
-                  return _c("tr", { key: index }, [
-                    _c("td", { staticClass: "font-bold column-string" }, [
-                      _vm._v(_vm._s(translation[0]))
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      { staticClass: "column-translations" },
-                      _vm._l(translation[1], function(langValue, lang) {
-                        return _c(
-                          "div",
-                          { key: lang, staticClass: "translation" },
-                          [
-                            _c(
-                              "label",
-                              { attrs: { for: lang + "-" + translation[0] } },
-                              [_vm._v(_vm._s(lang))]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.translations[index][1][lang],
-                                  expression: "translations[index][1][lang]"
-                                }
-                              ],
-                              attrs: {
-                                type: "text",
-                                id: lang + "-" + translation[0]
-                              },
-                              domProps: {
-                                value: _vm.translations[index][1][lang]
-                              },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+    !_vm.loadingTranslations && _vm.translations.length
+      ? _c(
+          "form",
+          {
+            staticClass: "flex justify-end",
+            attrs: { id: "st_form" },
+            on: { submit: _vm.confirmUpdate }
+          },
+          [
+            _vm.translations.length
+              ? _c("table", { staticClass: "data fullwidth widefat striped" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.translations, function(translation, index) {
+                      return _c("tr", { key: index }, [
+                        _c("td", { staticClass: "font-bold column-string" }, [
+                          _vm._v(_vm._s(translation[0]))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "column-translations" },
+                          _vm._l(translation[1], function(langValue, lang) {
+                            return _c(
+                              "div",
+                              { key: lang, staticClass: "translation" },
+                              [
+                                _c(
+                                  "label",
+                                  {
+                                    attrs: { for: lang + "-" + translation[0] }
+                                  },
+                                  [_vm._v(_vm._s(lang))]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.translations[index][1][lang],
+                                      expression: "translations[index][1][lang]"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "text",
+                                    id: lang + "-" + translation[0]
+                                  },
+                                  domProps: {
+                                    value: _vm.translations[index][1][lang]
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.translations[index][1],
+                                        lang,
+                                        $event.target.value
+                                      )
+                                    }
                                   }
-                                  _vm.$set(
-                                    _vm.translations[index][1],
-                                    lang,
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]
+                                })
+                              ]
+                            )
+                          }),
+                          0
                         )
-                      }),
-                      0
-                    )
-                  ])
-                }),
-                0
-              )
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn submit" }, [
+              _vm._v("Save Changes")
             ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn submit" }, [_vm._v("Save Changes")])
-      ]
-    ),
+          ]
+        )
+      : _vm._e(),
     _vm._v(" "),
     !_vm.loadingTranslations && !_vm.translations.length
       ? _c("div", { staticClass: "mt-4" }, [

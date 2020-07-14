@@ -4,7 +4,7 @@
       <div class="spinner big"></div>
     </div>
 
-    <form class="flex justify-end" id="st_form" @submit="confirmUpdate">
+    <form class="flex justify-end" id="st_form" v-if="( !loadingTranslations && translations.length )" @submit="confirmUpdate">
 
       <table class="data fullwidth widefat striped" v-if="translations.length">
         <thead>
@@ -37,7 +37,7 @@
 
 <script>
 import axios from 'axios';
-//:value="`${langValue}`"
+
 export default {
 
   props: {
