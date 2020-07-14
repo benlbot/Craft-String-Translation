@@ -108,7 +108,7 @@ class StringTranslation extends Component {
                     } else {
                         $startInsert = true;
                     }
-                    $contentInsert = file_put_contents($translationFilePath, "\t\"".$translationValues[0].'" => "'.$value.'",'.PHP_EOL, FILE_APPEND | LOCK_EX);
+                    $contentInsert = file_put_contents($translationFilePath, "    \"".$translationValues[0].'" => "'.$value.'",'.PHP_EOL, FILE_APPEND | LOCK_EX);
                     if ( $lastLine) {
                         $endInsert = file_put_contents($translationFilePath, "];".PHP_EOL, FILE_APPEND |  LOCK_EX);
                     } else {
