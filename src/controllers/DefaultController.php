@@ -87,7 +87,7 @@ class DefaultController extends Controller {
 
         $request = Craft::$app->getRequest();
 
-        $translations = json_decode($request->getRawBody());
+        $translations = json_decode($request->getParam('translations'));
 
         return $this->asJson(StringTranslationPlugin::$plugin->StringTranslation->updateTranslations($translations));
     }

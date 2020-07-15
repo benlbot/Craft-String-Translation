@@ -1901,7 +1901,9 @@ __webpack_require__.r(__webpack_exports__);
       var headers = {
         'X-CSRF-Token': Craft.csrfTokenValue
       };
-      var data = JSON.stringify(this.translations);
+      var data = {
+        'translations': JSON.stringify(this.translations)
+      };
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/actions/string-translation/default/update-translations', data, {
         'headers': headers
       }).then(function (response) {

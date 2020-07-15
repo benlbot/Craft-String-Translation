@@ -632,17 +632,6 @@ table.fixed {
   padding: 3px;
 }
 
-.v-reset-input {
-  top: 6px;
-  right: 15px;
-  font-size: 17px;
-  display: none;
-}
-
-.v-reset-input.v-reset-input-active {
-  display: block;
-}
-
 .list-reset {
   list-style: none;
   padding: 0;

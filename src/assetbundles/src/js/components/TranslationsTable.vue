@@ -68,7 +68,9 @@ export default {
         'X-CSRF-Token': Craft.csrfTokenValue,
       };
 
-      let data = JSON.stringify(this.translations);
+      let data = {
+        'translations' : JSON.stringify(this.translations)
+      }
 
       axios.post('/actions/string-translation/default/update-translations', data, {'headers': headers})
       .then((response) => {
