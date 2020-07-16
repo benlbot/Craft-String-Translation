@@ -2,7 +2,7 @@
     "name": "benlbot/string-translation",
     "description": "Translate your translation strings into different languages.",
     "type": "craft-plugin",
-    "version": "1.1.0",
+    "version": "1.1.2",
     "keywords": [
         "craft",
         "cms",
